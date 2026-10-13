@@ -22,6 +22,13 @@ exp1_boolean_min.vcd	VCD waveform dump generated during simulation
 ## Verilog Program
 
 
+module fun (
+input wire A, 
+input wire B, 
+output wire F 
+); 
+assign F = (~A) | B ;    // F = A' + B 
+endmodule
 
 ## TestBench Program
 
@@ -31,7 +38,34 @@ exp1_boolean_min.vcd	VCD waveform dump generated during simulation
 
 
 
-    
+    module tb;
+    reg A, B;
+    wire F;
+    // Instantiate the design under test (DUT)
+    fun uut (
+        .A(A),
+        .B(B),
+        .F(F)
+    );
+
+    initial begin
+        // ---- VCD dump setup ----
+        $dumpfile("fun.vcd");   // name of the VCD file to be generated
+        $dumpvars(0, tb);   // dump all signals in this testbench hierarchy
+
+        // ---- Apply all 4 input combinations ----
+        $monitor("Time=%0t A=%b B=%b | F=%b", $time, A, B, F);
+
+        A = 0; B = 0; #10;
+        A = 0; B = 1; #10;
+        A = 1; B = 0; #10;
+        A = 1; B = 1; #10;
+
+        #10 $finish;
+    end
+
+endmodule
+
 ## Truth Table
  
 <img width="795" height="311" alt="image" src="https://github.com/user-attachments/assets/dd4ba5b9-016b-4ae5-a693-f309c60c4c0e" />
@@ -86,6 +120,7 @@ and successfully implemented using Verilog HDL.
 ## OUTPUT
 
 
+<img width="1902" height="1077" alt="vasanthan p 26018948 EXP 2" src="https://github.com/user-attachments/assets/12340efa-253e-430e-a599-a62a77058d7e" />
 
 The design was compiled and simulated using Synopsys VCS, and the functionality was verified using DVE waveform analysis.
 7. Viva-Voce Questions
