@@ -23,6 +23,13 @@ exp1_boolean_min.vcd	VCD waveform dump generated during simulation
 
 
 
+module fun (
+input wire A, 
+input wire B, 
+output wire F 
+); 
+assign F = (~A) | B ;    // F = A' + B 
+endmodule
 ## TestBench Program
 
 
@@ -31,7 +38,34 @@ exp1_boolean_min.vcd	VCD waveform dump generated during simulation
 
 
 
-    
+
+module tb;
+    reg A, B;
+    wire F;
+    // Instantiate the design under test (DUT)
+    fun uut (
+        .A(A),
+        .B(B),
+        .F(F)
+    );
+
+    initial begin
+        // ---- VCD dump setup ----
+        $dumpfile("fun.vcd");   // name of the VCD file to be generated
+        $dumpvars(0, tb);   // dump all signals in this testbench hierarchy
+
+        // ---- Apply all 4 input combinations ----
+        $monitor("Time=%0t A=%b B=%b | F=%b", $time, A, B, F);
+
+        A = 0; B = 0; #10;
+        A = 0; B = 1; #10;
+        A = 1; B = 0; #10;
+        A = 1; B = 1; #10;
+
+        #10 $finish;
+    end
+
+endmodule
 ## Truth Table
  
 <img width="795" height="311" alt="image" src="https://github.com/user-attachments/assets/dd4ba5b9-016b-4ae5-a693-f309c60c4c0e" />
@@ -40,7 +74,6 @@ exp1_boolean_min.vcd	VCD waveform dump generated during simulation
 STEP 1 – Open Terminal
 Open a terminal in the experiment folder.
 bash
-
 STEP 2 – Load Synopsys Environment
 source /synopsys/start.sh
 
@@ -52,6 +85,8 @@ simv
 
 STEP 4 – Run Simulation
 ./simv
+
+
 The terminal displays the input combinations and corresponding output F.
 A VCD waveform file is also generated:
 exp1_boolean_min.vcd
@@ -76,7 +111,8 @@ o	F
 5.	Verify that F = 1 whenever B and D are equal.
 6.	Verify that F = 0 whenever B and D are different.
 The waveform should agree with the truth table.
- 
+ <img width="1920" height="1080" alt="Vasanthan p 26018948 EXP 1" src="https://github.com/user-attachments/assets/624ee92d-9cda-44b1-94c9-56b75391ef83" />
+
 ### Expected Result
 The Boolean function
 F(A,B,C,D)=Σm(0,2,5,7,8,10,13,15), which simplifies to F=B'D'+BD.
@@ -84,8 +120,7 @@ was minimized to F=B'D'+BD.
 and successfully implemented using Verilog HDL.
 
 ## OUTPUT
-
-
+<img width="1920" height="1080" alt="Vasanthan p 26018948 EXP 1" src="https://github.com/user-attachments/assets/25a52986-ad79-4f25-9005-28200e554aab" />
 
 The design was compiled and simulated using Synopsys VCS, and the functionality was verified using DVE waveform analysis.
 7. Viva-Voce Questions
