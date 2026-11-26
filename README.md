@@ -99,7 +99,7 @@ o	F
 6.	Verify that F = 0 whenever B and D are different.
 The waveform should agree with the truth table.
  <img width="1920" height="1080" alt="Vasanthan p 26018948 EXP 1" src="https://github.com/user-attachments/assets/624ee92d-9cda-44b1-94c9-56b75391ef83" />
-
+ 
 ### Expected Result
 The Boolean function
 F(A,B,C,D)=Σm(0,2,5,7,8,10,13,15), which simplifies to F=B'D'+BD.
